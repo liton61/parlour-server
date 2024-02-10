@@ -26,12 +26,34 @@ async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
-        // Send a ping to confirm a successful connection
+
+        // const usersCollection = client.db("parlourDB").collection('users');
+        const servicesCollection = client.db("parlourDB").collection('services');
+
+        // post method for user
+        // app.post('/users', async (req, res) => {
+        //     const user = req.body;
+        //     const query = { email: user.email }
+        //     const existingUser = await usersCollection.findOne(query);
+        //     if (existingUser) {
+        //         return res.send({ message: 'user already exist', insertedId: null })
+        //     }
+        //     const result = await usersCollection.insertOne(user);
+        //     res.send(result)
+        // })
+
+        // get method for menu
+        app.get('/services', async (req, res) => {
+            const result = await servicesCollection.find().toArray();
+            res.send(result)
+        })
+
+
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
-        await client.close();
+        // await client.close();
     }
 }
 run().catch(console.dir);
